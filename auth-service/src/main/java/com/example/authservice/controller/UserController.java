@@ -16,7 +16,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-@CrossOrigin("*")
 @Slf4j
 @Validated
 @RequiredArgsConstructor
