@@ -17,8 +17,11 @@ public class Department {
     @Column(name = "NAME")
     private String name;
 
-    @Column(name = "TOTAL_MEMBERS")
-    private int totalMembers;
+    @Column(name = "TOTAL_MEMBER")
+    private int totalMember;
+
+    @Column(name = "TYPE")
+    private String type;
 
     @Column(name = "CREATED_DATE")
     private Date createdDate;
