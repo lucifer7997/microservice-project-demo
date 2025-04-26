@@ -39,4 +39,16 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(HttpStatus.OK, "User registered"));
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody RegisterRequest loginRequest) {
+        ApiResponse response = authenticationService.login(loginRequest);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<?> refreshToken(@RequestHeader("Authorization") String refreshToken) {
+        ApiResponse response = authenticationService.refreshToken(refreshToken);
+        return ResponseEntity.ok().body(response);
+    }
 }
