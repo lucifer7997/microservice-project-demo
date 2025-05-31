@@ -1,10 +1,13 @@
-package com.example.authservice.dto.request;
+package com.example.dto.request;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 @AllArgsConstructor
 public class RegisterRequest {
     @NotEmpty(message = "Username must not be empty")
@@ -24,4 +27,5 @@ public class RegisterRequest {
     @NotBlank(message = "Role can not be null")
     @Pattern(regexp = "ADMIN|MANAGER|USER", message = "The role must be ADMIN, MANAGER or USER")
     private String role;
+
 }

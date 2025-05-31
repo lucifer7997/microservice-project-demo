@@ -15,9 +15,9 @@ public class Account {
     @Column(name = "USERNAME")
     private String username;
 
-    @Column(name = "FIRST_NAME")
+    @Column(name = "FIRSTNAME")
     private String firstName;
 
-    @Column(name = "LAST_NAME")
+    @Column(name = "LASTNAME")
     private String lastName;
 }

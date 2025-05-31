@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway" />
         <module name="eureka-server" />
+        <module name="auth-service" />
       </profile>
       <profile name="Annotation profile for department-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -19,7 +20,6 @@
         </processorPath>
         <module name="account-service" />
         <module name="department-service" />
-        <module name="auth-service" />
       </profile>
     </annotationProcessing>
   </component>

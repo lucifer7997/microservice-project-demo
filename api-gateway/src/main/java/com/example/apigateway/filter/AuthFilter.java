@@ -32,37 +32,38 @@ public class AuthFilter implements GatewayFilter {
         ServerHttpRequest request = exchange.getRequest();
 
         if (this.isAuthMissing(request)) {
-            log.error("Authorization header is missing");
-            throw new ValidationException(HttpStatus.UNAUTHORIZED, "Authorization header is missing");
+            log.error("Authorization header is missing in request");
+            throw new ValidationException(HttpStatus.UNAUTHORIZED, "Authorization header is missing in request");
         }
 
         String authHeader = this.getAuthHeader(request);
         if (!StringUtils.hasText(authHeader) || !authHeader.startsWith(TOKEN_PREFIX)) {
-            throw new ValidationException(HttpStatus.UNAUTHORIZED, "Authorization header is incorrect");
+            throw new ValidationException(HttpStatus.UNAUTHORIZED, "Authorization header method is incorrect");
         }
 
         String token = authHeader.substring(TOKEN_INDEX);
-        if (!jwtService.isTokenValid(token)) {
-            log.error("Invalid token");
-            throw new ValidationException(HttpStatus.UNAUTHORIZED, "Invalid token");
+
+        if (!jwtService.validateToken(token)) {
+            throw new ValidationException(HttpStatus.UNAUTHORIZED, "Token invalid");
         }
-        populateRequestWithHeaders(exchange, token);
+
+        populateRequestWithHeader(exchange, token);
         return chain.filter(exchange);
     }
 
     private boolean isAuthMissing(ServerHttpRequest request) {
-        return request.getHeaders().get(AUTH_HEADER_KEY) == null;
+        return !request.getHeaders().containsKey(AUTH_HEADER_KEY);
     }
 
     private String getAuthHeader(ServerHttpRequest request) {
-        return Objects.requireNonNull(request.getHeaders().get(AUTH_HEADER_KEY)).get(0);
+        return request.getHeaders().getOrEmpty(AUTH_HEADER_KEY).get(0);
     }
 
-    private void populateRequestWithHeaders(ServerWebExchange exchange, String token) {
+    private void populateRequestWithHeader(ServerWebExchange exchange, String token) {
         Claims claims = jwtService.extractAllClaims(token);
         exchange.getRequest().mutate()
-                .header(ID, claims.get(ID).toString())
-                .header(ROLE, claims.get(ROLE).toString())
+                .header(ID, String.valueOf(claims.get(ID)))
+                .header(ROLE, String.valueOf(claims.get(ROLE)))
                 .build();
     }
 }

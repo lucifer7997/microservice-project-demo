@@ -18,14 +18,14 @@ public class JwtService {
     @Value("${jwt.secretKey}")
     private String secretKey;
 
-    private Key getSigningKey() {
+    private Key getSigningKey(String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
     public Claims extractAllClaims(String token) {
         return io.jsonwebtoken.Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
+                .setSigningKey(getSigningKey(secretKey))
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
@@ -48,7 +48,7 @@ public class JwtService {
         return extractExpiration(token).before(new Date());
     }
 
-    public boolean isTokenValid(String token) {
+    public boolean validateToken(String token) {
         String username = extractUsername(token);
         return !isTokenExpired(token) && StringUtils.hasText(username);
     }
